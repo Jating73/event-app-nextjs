@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
-
+import Head from "next/head";
 import { getFilteredEvents } from "../../dummy-data";
 import EventList from "../../components/events/EventList";
 import ErrorAlert from "../../components/ui/ErrorAlert";
 import Button from "../../components/ui/Button";
+import { Fragment } from "react";
 
 function FilteredEventPage() {
   const router = useRouter();
@@ -20,6 +21,16 @@ function FilteredEventPage() {
   const numYear = +filteredYear;
   const numMonth = +filteredMonth;
 
+  let pageHead = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All Events for ${numMonth}/${numYear}`}
+      />
+    </Head>
+  );
+
   if (
     isNaN(numYear) ||
     isNaN(numMonth) ||
@@ -30,6 +41,7 @@ function FilteredEventPage() {
   ) {
     return (
       <ErrorAlert>
+        {pageHead}
         <p>Invalid Filter! Please Adjust your values</p>{" "}
         <Button link={`/events`}>Back</Button>
       </ErrorAlert>
@@ -43,17 +55,22 @@ function FilteredEventPage() {
 
   if (!filteredEvents || filteredEvents.length === 0) {
     return (
-      <ErrorAlert>
-        <p>No Events Found</p> <Button link={`/events`}>Back</Button>
-      </ErrorAlert>
+      <Fragment>
+        {pageHead}
+        <ErrorAlert>
+          <p>No Events Found for chosen Filter</p>
+          <Button link={`/events`}>Show All Events</Button>
+        </ErrorAlert>
+      </Fragment>
     );
   }
 
   return (
-    <div>
-      <h1 style={{ textAlign: "center" }}>Filtered Event Page</h1>
+    <Fragment>
+      {pageHead}
+      <h2 style={{ textAlign: "center" }}>Events in {numYear}</h2>
       <EventList items={filteredEvents} />
-    </div>
+    </Fragment>
   );
 }
 

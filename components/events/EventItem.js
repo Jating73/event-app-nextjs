@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import Button from "../ui/Button";
@@ -22,7 +23,8 @@ function EventItem(props) {
 
   return (
     <li className={classes.item}>
-      <img src={"/" + image} alt={title} className={classes.img} />
+      <Image src={"/" + image} alt={title} width={250} height={160}/>
+      {/* <img src={"/" + image} alt={title} className={classes.img} /> */}
       <div className={classes.content}>
         <div>
           <h2>{title}</h2>
